@@ -16,11 +16,7 @@
 
     <!-- SB Admin CSS - Include with every page -->
     <link href="css/sb-admin.css" rel="stylesheet">
-	<script src="jquery.js"></script>
-	<script src="jquery.annotate.js"></script>
-	<link rel="stylesheet" type="text/css" href="demo.css">
-	
-
+	<script src="js/jquery.js"></script>
 </head>
 
 <body>
@@ -36,91 +32,77 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <a class="navbar-brand" href="index.html">Demo</a>
+                <a class="navbar-brand" href="#"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Editor</a>
 				
             </div>
             <!-- /.navbar-top-links -->
 
-            <div class="navbar-default navbar-static-side" role="navigation">
-                <div class="sidebar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-                        <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Home</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-edit fa-fw"></i> Scripts<span class="fa arrow"></a>
-							<ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">View Scripts</a>
-                                </li>
-                                <li>
-                                    <a href="AddCourse.php">Add a Course</a>
-                                </li>
-                                <li>
-                                    <a href="AddTest.php">Add a Test</a>
-                                </li>
-                                <li>
-                                    <a href="AddScript.php">Add a Script</a>
-                                </li>
-                            </ul>
-                        </li>
-						<li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-						<li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Dashboard</span></a>
-                        </li>
-                    </ul>
-                    <!-- /#side-menu -->
-                </div>
-                <!-- /.sidebar-collapse -->
+
             </div>
             <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
-            <div class="row">
-			<br>
-				<!--<div class="btn-toolbar" role="toolbar">
-				  <div class="btn-group">
-					<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span></button>
-					<button type="button" class="btn btn-default"><span> <img src='half-tick.png' width="15px" height="15px"/></span></button>
-					<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-repeat"></span></button>
-					<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-flag"></span></button>
-				  </div>
-				</div>-->
-				<div class="col-lg-6">
-					<form role=form>
-					<label>Student Number:</label>
-					<input class="form-control" name="studentNumber">
-					<p>Please have a look at the image below and insert the student number found.</p>
-					</form>
+        <div class="container"  style="width: 100%;">
+          <br>
+			<div class="row">
+                <div class="col-lg-4">
+				
+					
 					<div class="well">
 					<?php 
-						$dir = str_replace(" ","+", $_GET["directory"]);
+						$info = explode("/",$_GET["directory"]);
+						//echo $_GET["directory"];
+						$course = $info[0];
+						$test = $info[1]; 
+						$dir = str_replace(" ","+",$info[2]);
 						echo '<img src="uploads/'.$dir.'/page1.png" width="100%"/>';
 						
 						//with the input button SQL statement to db need to be added.
 					?>
 					
                     </div>
-					<input type="submit" href="save.php" class="btn btn-outline btn-primary btn-lg btn-block" value="Complete">
-			  
+					
+					</div>
+			
+				<div class="col-lg-5">
+					<form name="input" action="file.php" method="post">
+					<label>Student Number:</label>
+					<input type="text" class="form-control" name="studentNumber">
+					<p>Please insert the student number found on the image.</p>
+					<?php 
+					$course = explode("CSC",$course);
+					
+					echo '<div class="form-group">
+						<label for="disabledSelect">Course</label>
+						<input class="form-control" id="disabledInput" type="text" value="CSC'.$course[1].'"placeholder="Disabled input" disabled="">
+					</div>';
+					echo '<div class="form-group">
+						<label for="disabledSelect">Test</label>
+						<input class="form-control" id="disabledInput" type="text"  value="'.str_replace("_", " ", $test).'"placeholder="Disabled input" disabled="">
+					</div>';
+					$mark = file_get_contents('uploads/'.$dir."/marks.txt");
+					$mark = str_replace("This is the marks for: ".str_replace("/","",$dir),"",$mark);
+					$content = file_get_contents('uploads/reformattedEndMarkers.txt');
+					$content = explode("<split_marker>",$content);
+					$total = explode(" ",$content[0]);
+					echo '<div class="form-group">
+						<label for="disabledSelect">Mark</label>
+						<input class="form-control" id="disabledInput" type="text" value="'.str_replace(" ","",$mark).'/'.str_replace("Question","",$total[0]).'"placeholder="Disabled input" disabled="">
+					</div>';
+					echo $mark;
+					echo '<input type="hidden" name="Course" "CSC'.$course[1].'">';
+					echo '<input type="hidden" name="Test" value="'.str_replace("_", " ", $test).'">';
+					echo '<input type="hidden" name="Mark" value="'.str_replace(" ","",$mark).'">';
+					?>
+					
+					<input type="submit" class="btn btn-outline btn-success btn-lg btn-block" name="Complete" value="Complete">
+					</form>
 				</div>
-				</div>
-				</div>
-				</div>
+			</div>
+		</div>
+	</div>
+</div>
+				
 	    <!-- Core Scripts - Include with every page -->
 		 <script src="js/bootstrap.min.js"></script>
 		 <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>

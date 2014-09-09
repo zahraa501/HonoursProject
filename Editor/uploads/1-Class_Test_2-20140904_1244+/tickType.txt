@@ -1,3 +1,5 @@
 This is the tick type and page for: 1-Class_Test_2-20140904_1244+
 
-tick 2*tick 3*half 5*tick 3*tick 4*tick 5*tick 3*half 3*half 4*tick 2*half 2*
+
+
+tick 2*half 3*tick 4*tick 2*half 2*tick 3*half 3*half 2*tick 2*tick 2*tick 3*tick 3*tick 2*

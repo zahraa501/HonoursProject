@@ -1,0 +1,59 @@
+#nutmeg,#smallNutmeg,#numberedNutmeg,#labeledNutmeg
+{
+	position:relative;
+	cursor:pointer;
+	width:100%;
+}
+
+#nutmeg
+{
+	cursor:pointer;
+}
+
+span.note
+{
+	display:block;
+	position:absolute;
+	top:-2px;
+	left:0;
+	z-index:10;
+	background:url(Images/notes-bg-1.png) no-repeat 0 0;
+	width:25px;
+	height:25px;
+	font-size:12px;
+	font-weight:bold;
+	line-height:25px;
+	letter-spacing:-1px;
+	text-align:center;
+	color:#fff;
+	text-decoration:none;
+	text-shadow:0 1px 1px rgba(0,0,0,.15);
+}
+span.noteHalf
+{
+	display:block;
+	position:absolute;
+	top:-2px;
+	left:0;
+	z-index:10;
+	background:url(Images/notes-bg-2.png) no-repeat 0 0;
+	width:25px;
+	height:25px;
+	font-size:12px;
+	font-weight:bold;
+	line-height:25px;
+	letter-spacing:-1px;
+	text-align:center;
+	color:#fff;
+	text-decoration:none;
+	text-shadow:0 1px 1px rgba(0,0,0,.15);
+}
+span.note.black
+{
+	background-position:-150px 0;
+}
+
+span.noteHalf.black
+{
+	background-position:-150px 0;
+}

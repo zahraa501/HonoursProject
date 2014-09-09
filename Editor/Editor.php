@@ -23,9 +23,9 @@
 
 </head>
 
-<body>
+<body onload="tick()" style="width: 100%;">
 
-    <div id="wrapper" onload="tick()">
+    <div id="wrapper" onload="tick()" style="height: 100%;">
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
 		 <div class="container-fluid">
@@ -38,7 +38,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			  </button>
-			  <a class="navbar-brand" href="#">Demo</a>
+			  <a class="navbar-brand" href="#"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Editor</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -48,10 +48,9 @@
 			  <form action="save.php" method="get" class="navbar-form navbar-right" >
 					<input type="hidden" value="
 					<?php $info =  $_REQUEST["q"];
-					//echo $info;
 					$sent = explode("/",$info);
 					$dir = $sent[2];
-					echo $dir;?>" 
+					echo $_REQUEST["q"];?>" 
 					name="directory"/>
 					<button type="submit" class="btn btn-default" data-toggle="tooltip" 
 					data-placement="bottom" title="Save Script">Complete</a></button>
@@ -64,23 +63,20 @@
 					data-placement="bottom" title="Half-tick Annotation"><span> <img src='Images/half-tick.png' width="15px" height="15px"/></span></button>
 					<button type="button" class="btn btn-default" onclick="undo()" data-toggle="tooltip" 
 					data-placement="bottom" title="Undo"><span class="glyphicon glyphicon-repeat"></span></button>
-					<button class="btn btn-default" data-toggle="modal" data-target="#myModal">
-					  <span class="glyphicon glyphicon-flag"></span>
-					</button>
+					<button class="btn btn-default" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-flag"></span></button>
 			 </div>
-			  
-			  
 			 <div class="navbar-form navbar-right" >
-			 <button type="button" id="mark" class="btn btn-success disabled">
+			 
 					<?php
 					
-					//echo $dir;
+					
 					//$splitInfo = explode("/",$dir);
 					$dir = str_replace(" ","+",$dir).'/';
 					//echo $dir;
 					$page = $sent[3];
 					$mark = file_get_contents('uploads/'.$dir."marks.txt");
 					$mark = str_replace("This is the marks for: ".str_replace("/","",$dir),"",$mark);
+					echo '<button type="button" id="mark" class="btn btn-success disabled" value="'.$mark.'">';
 					echo "Mark: ".$mark;
 					echo '<input type="hidden" id="totalmark" value="'.$mark.'"/>';
 					?>
@@ -90,66 +86,70 @@
 		  </div><!-- /.container-fluid -->
             <!-- /.navbar-top-links -->
 
-            <div class="navbar-default navbar-static-side" role="navigation">
-                <div class="sidebar-collapse">
-                    <ul class="nav" id="side-menu">
-                        
-                        <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Home</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-edit fa-fw"></i> Scripts<span class="fa arrow"></a>
-							<ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">View Scripts</a>
-                                </li>
-                                <li>
-                                    <a href="AddCourse.php">Add a Course</a>
-                                </li>
-                                <li>
-                                    <a href="AddTest.php">Add a Test</a>
-                                </li>
-                                <li>
-                                    <a href="AddScript.php">Add a Script</a>
-                                </li>
-                            </ul>
-                        </li>
-						<li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-						<li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Dashboard</span></a>
-                        </li>
-                    </ul>
-                    <!-- /#side-menu -->
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
+           
             <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
-            <div class="row">
-			<br>
-			
-				<!--<div class="chat-panel panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-comments fa-fw"></i>
-						Memorandum
-					</div>
+        <div class="container" style="width: 100%;">
+		<br>
+		<div class="row">
+                <div class="col-lg-4">
+                    <div class="chat-panel panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-comments fa-fw"></i>
+							Memorandum
+						</div>
 					
-					<div style="height:100px">
-						
+						<div class="panel-body" style="height: 460px">
+                            <ul class="chat">
+							<?php
+								$content = file_get_contents('uploads/reformattedEndMarkers.txt');
+								$content = explode("<split_marker>",$content);
+								for($i =1; $i<sizeOf($content);$i = $i +2)
+								{
+                                echo '<li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <button type="button" class="btn btn-info btn-circle btn-lg disabled"><i class="glyphicon glyphicon-question-sign"></i></button>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Question</strong> 
+                                        </div>
+                                        <p>
+                                            '.$content[$i].'
+                                        </p>
+                                    </div>
+                                </li>';
+								echo '<li class="right clearfix">
+                                    <span class="chat-img pull-right">
+                                        <button type="button" class="btn btn-success btn-circle btn-lg disabled"><i class="fa fa-check"></i></button>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            
+                                            <strong class="pull-right primary-font">Answer</strong>
+                                        </div>
+										<br>
+                                            '.$content[$i+1].'
+                                        
+                                    </div>
+                                </li>';
+								}
+							?>
+							</ul>
+						</div>
 					</div>
-				</div>-->
-
-				<div class="chat-panel panel panel-default">
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-8">
+                    <div class="chat-panel panel panel-default" >
 					<div class="panel-heading">
 						<i class="fa fa-comments fa-fw"></i>
 						Student Script
 					</div>
 					<!-- /.panel-heading -->
-					<div class="panel-body">
+					<div class="panel-body" style="height: 460px">
 						
 					
 				<div id="nutmeg" onclick="save()">
@@ -164,7 +164,6 @@
 						{
 							$fileCount = $fileCount +1;
 						}
-						
 					}
 					
 					$pageNum = str_replace(".png","",$page);
@@ -223,7 +222,12 @@
 				</div>
 				</div>
 				</div>
-				
+				</div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+            <div class="row">
 				<div id="question" class="text-center">
 				<form action="action" method="get">
 				
@@ -269,7 +273,7 @@
 			  </div>
             </div>
 		</div>
-	</div>
+	
 	
 			<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -301,15 +305,13 @@
     <script src="js/sb-admin.js"></script>
 	
 	<script>
-	var count=  parseFloat(document.getElementById("totalmark").value);
-	var minus = 0;
 	$(document).ready(function(){
 	  function blackNote() {
 			if(document.getElementById("tick").value== "true")
 			{
 				
-				count = count +1;
-				document.getElementById("mark").innerHTML = "Mark: "+count;
+				document.getElementById("mark").value = parseFloat(document.getElementById("mark").value) +1;
+				document.getElementById("mark").innerHTML = "Mark: "+document.getElementById("mark").value;
 				//saveMark();
 				//mark plus 1
 			return $(document.createElement('span')).
@@ -317,8 +319,8 @@
 			}
 			else if (document.getElementById("half").value== "true")
 			{
-				count = count +0.5;
-				document.getElementById("mark").innerHTML = "Mark: "+count;
+				document.getElementById("mark").value = parseFloat(document.getElementById("mark").value) +0.5;
+				document.getElementById("mark").innerHTML = "Mark: "+document.getElementById("mark").value;
 				//updateMark();
 				
 				//mark plus 1/2
@@ -413,114 +415,83 @@
 		  //document.getElementById("mark").innerHTML=xmlhttp.responseText;
 		}
 	  }
+	  //creates files
 	  xmlhttp.open("GET","fileCreation.php?q="+str,true);
 	  xmlhttp.send();
 	 
 	}
 	function undo() {
-		
+		//information that is sent
 		str= document.getElementById("dir").value+"page"+document.getElementById("page").value+".png";
-	  
-	  var type;
-	  var xmlhttp=new XMLHttpRequest();
-	  xmlhttp.onreadystatechange=function() {
-		
-		
-			
-		type = xmlhttp.responseText;
-		
+		var xmlhttp=new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function() {
+		var type = xmlhttp.responseText;
+		//retrieves current mark and makes it a float
+		var mark = parseFloat(document.getElementById("mark").value);
+		//splits information
 		var coordinates = type.split(/[ ,]+/);
-		//document.getElementById("mark").innerHTML=coordinates[0];
+		//locates all ticks
 		$("span").each(function(index, elem){
-		if( $.trim($(this).css("left")) == coordinates[0] && $.trim($(this).css("top")) == coordinates[1])
-		{ this.remove();
-		}});
-		
-		 if(coordinates[2] == "tick")
+		//compares coordinates of tick
+			if( $.trim($(this).css("left")) == coordinates[0] && $.trim($(this).css("top")) == coordinates[1])
+			{ 
+				//deletes tick
+				this.remove();
+			}
+		});
+		//changes mark
+		if(coordinates[2] == "tick")
 		{
-			count = count -1;
-			document.getElementById("mark").innerHTML = "Mark: "+count;
-			
+			document.getElementById("mark").value = mark -0.5;
 		}
 		else if(coordinates[2] == "half")
 		{
-			count = count -0.5;
-			document.getElementById("mark").innerHTML = "Mark: "+count;
-			
+			mark = mark -0.25;	
 		}
-		//saveMark();
-		
+		//displays mark
+		document.getElementById("mark").innerHTML= "Mark: "+document.getElementById("mark").value;
+		//saves mark
+		saveMark();
 	  }
+	  
 	  xmlhttp.open("GET","undo.php?q="+str,true);
-	  xmlhttp.send();
-	  
-	  
-	  //window.location.reload();
+	  xmlhttp.send(); 
 	}
 	function saveMark() {
-	  var info = document.getElementById("dir").value+count;
+	  var info = document.getElementById("dir").value+document.getElementById("mark").value;
 	  var xmlhttp=new XMLHttpRequest();
 	  xmlhttp.onreadystatechange=function() {
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			
-		  //document.getElementById("mark").innerHTML=xmlhttp.responseText;
+		
+		
+		 // document.getElementById("mark").innerHTML= "Mark: "+xmlhttp.responseText;
 		  
 		}
 	  }
 	  xmlhttp.open("GET","Marks.php?q="+info,true);
 	  xmlhttp.send();
 	}
-	/*function update(mark) {
-	  
-	  var xmlhttp=new XMLHttpRequest();
-	  xmlhttp.onreadystatechange=function() {
-		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			
-		  document.getElementById("mark").innerHTML=xmlhttp.responseText;
-		}
-	  }
-	  xmlhttp.open("GET","Marks.php?q="+count,true);
-	  xmlhttp.send();
-	}*/
+
 	function tick()
 	{
-	   
-	  /*
-	  var xmlhttp=new XMLHttpRequest();
-	  xmlhttp.onreadystatechange=function() {
-		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			
-		  document.getElementById("buttons").innerHTML=xmlhttp.responseText;
-		}
-	  }
-	  xmlhttp.open("GET","buttonChanges.php?q=tick",true);
-	  xmlhttp.send();*/
 	  document.getElementById("tick").value = "true";
 	  document.getElementById("half").value = "false";
 	  document.getElementById("tick").className = "btn btn-default active"
 	  document.getElementById("half").className = "btn btn-default"
-	  //document.getElementById("values").innerHTML= document.getElementById("tick").value;
 	}
 	function half()
 	{
-	   
 
-	 /*var xmlhttp=new XMLHttpRequest();
-		xmlhttp.onreadystatechange=function() {
-		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			
-		  document.getElementById("buttons").innerHTML=xmlhttp.responseText;
-		}
-	  }
-	  xmlhttp.open("GET","buttonChanges.php?q=half",true);
-	  xmlhttp.send();*/
 	  document.getElementById("half").value = "true";
 	  document.getElementById("tick").value = "false";
 	  document.getElementById("half").className = "btn btn-default active"
 	  document.getElementById("tick").className = "btn btn-default"
-	  //document.getElementById("values").innerHTML= document.getElementById("tick").value;
 	}
-	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+	$(function() 
+	{ 
+		//button tooltips
+		$("[data-toggle='tooltip']").tooltip(); 
+	});
 	(function($){$.fn.annotatableImage=function(annotationCallback,options){var defaults={xPosition:'middle',yPosition:'middle'};
 		var options=$.extend(defaults,options);
 		var annotations=[];var image=$('img',this)[0];var date=new Date();var startTime=date.getTime();
@@ -558,10 +529,7 @@
 				  }
 				  xmlhttp.open("GET","writeToFile.php?q="+document.getElementById("dir").value+position,true);
 				  xmlhttp.send();
-				  return{x:parseInt($(this).css('left').replace('px','')),y:parseInt($(this).css('top').replace('px',''))};};})(jQuery);
-	
+				  return{x:parseInt($(this).css('left').replace('px','')),y:parseInt($(this).css('top').replace('px',''))};};})(jQuery);	
 	</script>
-
-	
 	</body>
 </html>

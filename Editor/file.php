@@ -90,6 +90,27 @@
         </nav>
 
         <div id="page-wrapper">
+		<?php
+			$con=mysqli_connect("localhost:3306","root","Changmin88","honours_project");
+			// Check connection
+			if (!$con) 
+			{
+			  echo "Failed to connect to MySQL: " . mysql_error();
+			}
+			if(isset($_POST['Complete']))
+			{
+				$AddQuery ="INSERT INTO script (StudentNumber, Course, Test, Mark) 
+				VALUES
+				('$_POST[studentNumber]','$_POST[Course]','$_POST[Test]',$_POST[Mark])";
+				mysqli_query($con, $AddQuery);
+			}
+			$result = mysqli_query($con,"SELECT * FROM script");						
+			while($row = mysqli_fetch_array($result))
+			{
+				echo $row['StudentNumber'].' '.$row['Course'].' '.$row['Test'].' '.$row['Mark'].'<br>';
+			}
+			mysqli_close($con);
+		?>
             <div class="row">
 			
 			 <form action="Editor.php" method="post">
